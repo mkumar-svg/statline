@@ -12,8 +12,6 @@ target/
 .settings
 .springBeans
 .sts4-cache
-.metadata/
-.sonarlint/
 
 ### IntelliJ IDEA ###
 .idea
@@ -33,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Environment/Secrets ###
-.env
-*.log
