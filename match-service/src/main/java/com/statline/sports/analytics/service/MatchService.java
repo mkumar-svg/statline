@@ -3,7 +3,6 @@ package com.statline.sports.analytics.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.statline.sports.analytics.model.MatchEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +11,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CommentaryService {
+public class MatchService {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final ObjectMapper objectMapper;   // Spring Boot auto-configures this bean
+    private final ObjectMapper objectMapper;
 
-    private static final int MAX_COMMENTARY_ITEMS = 200;
-    
     private static final String LIVE_MATCHES_SET = "live-matches";
-
-    public void trackLiveMatch(String matchId) {
-        redisTemplate.opsForSet().add(LIVE_MATCHES_SET, matchId);
-    }
 
     public List<String> getAllLiveMatchIds() {
         var members = redisTemplate.opsForSet().members(LIVE_MATCHES_SET);
@@ -31,23 +24,18 @@ public class CommentaryService {
         return members.stream().map(Object::toString).collect(Collectors.toList());
     }
 
-    public void saveLatestMatchEvent(MatchEvent event) {
-        String key = "match:" + event.getMatchId() + ":latest";
-        redisTemplate.opsForValue().set(key, event);
-    }
-
-    public void appendToCommentary(MatchEvent event) {
-        String key = "match:" + event.getMatchId() + ":commentary";
-        ListOperations<String, Object> listOps = redisTemplate.opsForList();
-        listOps.leftPush(key, event);
-        listOps.trim(key, 0, MAX_COMMENTARY_ITEMS - 1);
-    }
-
-    public MatchEvent getLatestMatchEvent(String matchId) {
+    public MatchEvent getMatchDetails(String matchId) {
         String key = "match:" + matchId + ":latest";
         Object raw = redisTemplate.opsForValue().get(key);
         if (raw == null) return null;
         return objectMapper.convertValue(raw, MatchEvent.class);
+    }
+
+    public List<MatchEvent> getAllLiveMatches() {
+        return getAllLiveMatchIds().stream()
+                .map(this::getMatchDetails)
+                .filter(m -> m != null)
+                .collect(Collectors.toList());
     }
 
     public List<MatchEvent> getCommentary(String matchId) {

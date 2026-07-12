@@ -20,6 +20,7 @@ public class MatchEventConsumer {
 
         commentaryService.saveLatestMatchEvent(event);
         commentaryService.appendToCommentary(event);
+        commentaryService.trackLiveMatch(event.getMatchId());   
 
         log.info("Cached event in Redis for matchId={}", event.getMatchId());
     }
