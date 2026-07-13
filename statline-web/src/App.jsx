@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import LiveScores from './pages/LiveScores';
+import MatchCenter from './pages/MatchCenter';
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<LiveScores />} />
-            {/* Future routes: /predict, /compare, /fantasy */}
+            <Route path="/match/:matchId" element={<MatchCenter />} />
           </Routes>
         </div>
       </div>

@@ -1,9 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+
 function MatchCard({ match }) {
+  const navigate = useNavigate();
   const p = match.payload;
   const isLive = p.matchStarted && !p.matchEnded;
 
   return (
-    <div className="bg-gradient-to-br from-[var(--color-panel)] to-[var(--color-panel-2)] border border-[var(--color-line)] rounded-xl p-5 mb-4 relative hover:border-[var(--color-gold-dim)] transition-colors cursor-pointer">
+    <div
+      onClick={() => navigate(`/match/${match.matchId}`)}
+      className="bg-gradient-to-br from-[var(--color-panel)] to-[var(--color-panel-2)] border border-[var(--color-line)] rounded-xl p-5 mb-4 relative hover:border-[var(--color-gold-dim)] transition-colors cursor-pointer"
+    >
       <div className="absolute top-4 right-4 flex items-center gap-1.5">
         {isLive ? (
           <>
