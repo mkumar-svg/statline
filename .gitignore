@@ -37,3 +37,4 @@ build/
 ### Environment/Secrets ###
 .env
 *.log
+node_modules/
