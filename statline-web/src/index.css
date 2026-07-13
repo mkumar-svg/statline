@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+:root {
+  --color-bg: #0A0E0C;
+  --color-panel: #12211A;
+  --color-panel-2: #0E1813;
+  --color-line: #23392E;
+  --color-pitch: #163326;
+  --color-gold: #F2B705;
+  --color-gold-dim: #8a6b0e;
+  --color-live: #FF4655;
+  --color-win: #3ED598;
+  --color-text-dim: #8CA398;
+  --color-text-faint: #52685D;
+}
+
+body {
+  background-color: var(--color-bg);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
